@@ -34,3 +34,23 @@ def test_enum_editor_keeps_original_value_while_showing_chinese(monkeypatch) -> 
     assert editor.currentText() == "日光"
     assert editor.value == "daylight"
     assert app is not None
+
+
+def test_all_manifest_labels_and_tooltips_are_localized(monkeypatch) -> None:
+    from spektrafilm_gui import i18n
+    from spektrafilm_gui import param_manifest
+
+    monkeypatch.setattr(i18n, "LANGUAGE", "zh_CN")
+    specs = []
+    for value in vars(param_manifest).values():
+        if hasattr(value, "fields") and hasattr(value, "title"):
+            specs.extend(value.fields)
+        elif isinstance(value, tuple):
+            specs.extend(item for item in value if hasattr(item, "leaf") and hasattr(item, "tooltip"))
+
+    assert specs
+    for spec in specs:
+        label = spec.label or spec.leaf.replace("_", " ")
+        assert i18n.tr(label) != label, f"Untranslated GUI label: {label}"
+        if spec.tooltip:
+            assert i18n.tr(spec.tooltip) != spec.tooltip, f"Untranslated tooltip: {spec.tooltip}"
