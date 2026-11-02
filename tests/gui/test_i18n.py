@@ -38,10 +38,11 @@ def test_enum_editor_keeps_original_value_while_showing_chinese(monkeypatch) -> 
 
 def test_all_manifest_labels_and_tooltips_are_localized(monkeypatch) -> None:
     from spektrafilm_gui import i18n
-    from spektrafilm_gui import param_manifest
+    from spektrafilm_gui import param_manifest, widget_sections
 
     monkeypatch.setattr(i18n, "LANGUAGE", "zh_CN")
-    specs = []
+    specs = list(widget_sections.LOAD_RAW_FIELDS)
+    specs.extend(widget_sections._AUXILIARY_FIELD_SPECS.values())
     for value in vars(param_manifest).values():
         if hasattr(value, "fields") and hasattr(value, "title"):
             specs.extend(value.fields)
@@ -54,3 +55,8 @@ def test_all_manifest_labels_and_tooltips_are_localized(monkeypatch) -> None:
         assert i18n.tr(label) != label, f"Untranslated GUI label: {label}"
         if spec.tooltip:
             assert i18n.tr(spec.tooltip) != spec.tooltip, f"Untranslated tooltip: {spec.tooltip}"
+
+    for action in widget_sections._SIMULATION_ACTION_BUTTON_SPECS.values():
+        tooltip = action.get("tooltip")
+        if tooltip:
+            assert i18n.tr(tooltip) != tooltip, f"Untranslated action tooltip: {tooltip}"
