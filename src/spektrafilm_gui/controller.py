@@ -25,6 +25,7 @@ from spektrafilm_gui.persistence import (
 )
 from spektrafilm_gui.state import PROJECT_DEFAULT_GUI_STATE, digest_after_selection, gui_state_from_params
 from spektrafilm_gui.napari_layout import dialog_parent, reset_viewer_camera, set_canvas_background, set_status
+from spektrafilm_gui.i18n import tr
 from spektrafilm_gui.params_mapper import build_params_from_state
 from spektrafilm_gui.state_bridge import apply_gui_state, collect_gui_state
 from spektrafilm_gui.widgets import WidgetBundle
@@ -185,7 +186,7 @@ class GuiController:
 
     def load_raw_image(self, path: str) -> None:
         gui_state = collect_gui_state(widgets=self._widgets)
-        set_status(self._viewer, "Loading raw...", timeout_ms=0)
+        set_status(self._viewer, tr("正在导入 RAW…"), timeout_ms=0)
         lens_info: dict[str, str] = {}
         try:
             image = load_and_process_raw_file(
@@ -199,8 +200,8 @@ class GuiController:
                 lens_info_out=lens_info,
             )
         except (OSError, ValueError) as exc:
-            QMessageBox.critical(dialog_parent(self._viewer), 'Load raw', f'Failed to load RAW image.\n\n{exc}')
-            set_status(self._viewer, 'Load raw failed')
+            QMessageBox.critical(dialog_parent(self._viewer), tr('Load raw'), f'{tr("导入 RAW 图像失败。")}\n\n{exc}')
+            set_status(self._viewer, tr('RAW 导入失败'))
             return
 
         self._current_input_path = path
@@ -210,12 +211,12 @@ class GuiController:
         if lens_summary:
             set_status(
                 self._viewer,
-                f"Loaded raw and applied lens correction: {lens_summary}",
+                f'{tr("RAW 已导入并应用镜头校正")}：{lens_summary}',
             )
         elif gui_state.gui_only.load_raw.lens_correction:
-            set_status(self._viewer, "Loaded raw, lens correction not applied")
+            set_status(self._viewer, tr('RAW 已导入，未应用镜头校正'))
         else:
-            set_status(self._viewer, "Loaded raw")
+            set_status(self._viewer, tr('RAW 已导入'))
         self._request_auto_preview_if_enabled()
 
     def refresh_preview_cache(self, *_args) -> None:
@@ -315,13 +316,13 @@ class GuiController:
 
         self._set_display_transform_checked(False)
         if report_status:
-            set_status(self._viewer, 'Display transform unavailable: no display profile detected, disabled')
+            set_status(self._viewer, tr('未检测到显示器配置文件，已停用显示变换'))
         return False
 
     def save_output_layer(self) -> None:
         output_layer = self._output_layer()
         if output_layer is None:
-            QMessageBox.warning(dialog_parent(self._viewer), 'Save output', 'Run a simulation before saving the output layer.')
+            QMessageBox.warning(dialog_parent(self._viewer), tr('Save output'), tr('请先运行模拟，再保存输出图层。'))
             return
 
         if self._current_input_path is not None:
@@ -381,7 +382,7 @@ class GuiController:
                 cctf_encoding=saving_cctf_encoding,
             )
         except (OSError, ValueError) as exc:
-            QMessageBox.critical(dialog_parent(self._viewer), 'Save output', f'Failed to save output image.\n\n{exc}')
+            QMessageBox.critical(dialog_parent(self._viewer), tr('Save output'), f'{tr("保存输出图像失败。")}\n\n{exc}')
             return
 
         metadata_write_error = None
@@ -398,10 +399,10 @@ class GuiController:
         if metadata_write_error is not None:
             set_status(
                 self._viewer,
-                f"Saved output image to {filepath}, but failed to copy metadata: {metadata_write_error}",
+                f'{tr("输出图像已保存至")} {filepath}，{tr("但复制元数据失败")}：{metadata_write_error}',
             )
         else:
-            set_status(self._viewer, f"Saved output image to {filepath}")
+            set_status(self._viewer, f'{tr("输出图像已保存至")} {filepath}')
 
     def save_current_as_default(self) -> None:
         persistence_actions.save_current_as_default(
@@ -688,12 +689,12 @@ class GuiController:
 
     def _start_simulation(self, *, source_layer_name: str, mode_label: str, report_status: bool = True) -> None:
         if self._active_simulation_worker is not None:
-            set_status(self._viewer, 'Simulation already running')
+            set_status(self._viewer, tr('模拟正在运行'))
             return
 
         image_data = self._simulation_input_image(source_layer_name=source_layer_name)
         if image_data is None:
-            QMessageBox.warning(dialog_parent(self._viewer), 'Run simulation', 'Load an input image before running the simulation.')
+            QMessageBox.warning(dialog_parent(self._viewer), tr('Run simulation'), tr('运行模拟前，请先导入输入图像。'))
             return
 
         state = collect_gui_state(widgets=self._widgets)
@@ -720,7 +721,7 @@ class GuiController:
         self._active_simulation_reports_status = report_status
         self._set_simulation_controls_enabled(False)
         if report_status:
-            set_status(self._viewer, f'Computing {mode_label.lower()}...', timeout_ms=0)
+            set_status(self._viewer, f'{tr("正在计算")} {tr(mode_label.lower())}…', timeout_ms=0)
         self._thread_pool.start(worker)
 
     def _on_simulation_finished(self, result: SimulationResult) -> None:
@@ -737,7 +738,7 @@ class GuiController:
             use_display_transform=result.use_display_transform,
         )
         if report_status:
-            set_status(self._viewer, f'{result.mode_label} completed. {result.status_message}')
+            set_status(self._viewer, f'{tr(result.mode_label.lower())}完成。{tr(result.status_message)}')
         self._replay_pending_auto_preview()
 
     def _on_simulation_failed(self, message: str) -> None:
@@ -746,8 +747,8 @@ class GuiController:
         self._active_simulation_label = None
         self._active_simulation_reports_status = True
         self._set_simulation_controls_enabled(True)
-        QMessageBox.critical(dialog_parent(self._viewer), 'Run simulation', f'Simulation failed.\n\n{message}')
-        set_status(self._viewer, f'{mode_label} failed')
+        QMessageBox.critical(dialog_parent(self._viewer), tr('Run simulation'), f'{tr("模拟失败。")}\n\n{message}')
+        set_status(self._viewer, f'{tr(mode_label.lower())}失败')
         self._replay_pending_auto_preview()
 
     def _set_simulation_controls_enabled(self, enabled: bool) -> None:
