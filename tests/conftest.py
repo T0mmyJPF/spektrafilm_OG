@@ -1,8 +1,11 @@
 import sys
+import os
 from pathlib import Path
 
 import numpy as np
 import pytest
+
+os.environ.setdefault("SPEKTRAFILM_LANGUAGE", "en")  # Keep legacy GUI assertions deterministic.
 
 SRC_DIR = Path(__file__).resolve().parents[1] / "src"
 if str(SRC_DIR) not in sys.path:

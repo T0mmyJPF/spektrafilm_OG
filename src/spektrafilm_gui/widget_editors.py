@@ -27,6 +27,7 @@ from spektrafilm_gui.theme_palette import (
     BOOL_EDITOR_HOVER_BG,
 )
 from spektrafilm_gui.theme import resolve_theme_qcolor
+from spektrafilm_gui.i18n import enum_label, tr
 
 
 @lru_cache(maxsize=None)
@@ -60,7 +61,7 @@ def _draw_profile_display_text(
         return
 
     font_metrics = QtGui.QFontMetrics(font)
-    prefix_text = f'{profile_use} '
+    prefix_text = f'{tr(profile_use)} '
     slash_text = '/ '
     prefix_width = font_metrics.horizontalAdvance(prefix_text)
     slash_width = font_metrics.horizontalAdvance(slash_text)
@@ -113,7 +114,7 @@ class ProfileEnumEditor(QtWidgets.QComboBox):
         profile_use, _color = _profile_use_text_and_color(value)
         if not profile_use:
             return value
-        return f'{profile_use} / {value}'
+        return f'{tr(profile_use)} / {value}'
 
     @property
     def value(self) -> str:
@@ -258,15 +259,18 @@ class BoolEditor(QtWidgets.QCheckBox):
 class EnumEditor(QtWidgets.QComboBox):
     def __init__(self, values: list[str]):
         super().__init__()
-        self.addItems(values)
+        # Display labels are localized; userData retains canonical values.
+        for value in values:
+            self.addItem(enum_label(value), userData=value)
 
     @property
     def value(self) -> str:
-        return self.currentText()
+        value = self.currentData()
+        return str(value) if value is not None else self.currentText()
 
     @value.setter
     def value(self, value: str) -> None:
-        index = self.findText(value)
+        index = self.findData(value)
         if index >= 0:
             self.setCurrentIndex(index)
         else:

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from spektrafilm_gui.i18n import tr
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -127,11 +129,11 @@ def display_profile_available(*, imagecms_module: Any) -> bool:
 
 def display_transform_status_message(enabled: bool, *, imagecms_module: Any) -> str:
     if not enabled:
-        return 'Display transform: disabled'
+        return tr('显示变换：已关闭')
     display_profile, profile_name = display_profile_details(imagecms_module=imagecms_module)
     if display_profile is None:
-        return 'Display transform: no display profile, using raw preview'
-    return f'Display transform: display profile found ({profile_name})'
+        return tr('未检测到显示器配置文件，使用原始预览')
+    return f'{tr("显示变换：已找到显示器配置文件")}（{profile_name}）'
 
 
 def prepare_input_color_preview_image(

@@ -14,10 +14,11 @@ from spektrafilm_gui.theme_palette import (
 )
 from spektrafilm_gui.icons import HEADER_ICON_SIZE, section_header_icon
 from spektrafilm_gui.theme import resolve_theme_qcolor
+from spektrafilm_gui.i18n import tr
 
 
 def normalize_ui_text(text: str) -> str:
-    return text.lower()
+    return tr(text.lower())
 
 
 def platform_default_font() -> QtGui.QFont:
