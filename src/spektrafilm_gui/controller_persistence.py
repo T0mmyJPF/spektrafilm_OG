@@ -39,7 +39,7 @@ def save_current_state_to_file(
 ) -> None:
     filepath, _ = file_dialog.get_save_file_name(
         dialog_parent_fn(viewer),
-        'Save GUI state',
+        tr('Save GUI state'),
         'gui_state.json',
         'JSON (*.json)',
     )
@@ -70,7 +70,7 @@ def load_state_from_file(
 ) -> None:
     filepath, _ = file_dialog.get_open_file_name(
         dialog_parent_fn(viewer),
-        'Load GUI state',
+        tr('Load GUI state'),
         '',
         'JSON (*.json)',
     )
@@ -85,7 +85,7 @@ def load_state_from_file(
 
     apply_gui_state_fn(gui_state, widgets=widgets)
     sync_canvas_background_fn()
-    set_status_fn(viewer, ff'{tr("已从文件加载界面设置")}：{filepath}')
+    set_status_fn(viewer, f'{tr("已从文件加载界面设置")}：{filepath}')
 
 
 def restore_factory_default(
