@@ -332,7 +332,7 @@ class GuiController:
 
         filepath, _ = _DirMemoryDialog('save_output').get_save_file_name(
             dialog_parent(self._viewer),
-            'Save output image',
+            tr('Save output image'),
             default_name,
             'Images (*.jpg *.jpeg *.png *.tif *.tiff *.exr)',
         )
