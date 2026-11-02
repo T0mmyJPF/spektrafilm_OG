@@ -27,7 +27,7 @@ from spektrafilm_gui.theme_palette import (
     BOOL_EDITOR_HOVER_BG,
 )
 from spektrafilm_gui.theme import resolve_theme_qcolor
-from spektrafilm_gui.i18n import enum_label
+from spektrafilm_gui.i18n import enum_label, tr
 
 
 @lru_cache(maxsize=None)
@@ -61,7 +61,7 @@ def _draw_profile_display_text(
         return
 
     font_metrics = QtGui.QFontMetrics(font)
-    prefix_text = f'{profile_use} '
+    prefix_text = f'{tr(profile_use)} '
     slash_text = '/ '
     prefix_width = font_metrics.horizontalAdvance(prefix_text)
     slash_width = font_metrics.horizontalAdvance(slash_text)
@@ -114,7 +114,7 @@ class ProfileEnumEditor(QtWidgets.QComboBox):
         profile_use, _color = _profile_use_text_and_color(value)
         if not profile_use:
             return value
-        return f'{profile_use} / {value}'
+        return f'{tr(profile_use)} / {value}'
 
     @property
     def value(self) -> str:
