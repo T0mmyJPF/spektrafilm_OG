@@ -90,7 +90,7 @@ _ZH = {
 "2 screen pixels mapped to 1 image pixel":"2 个屏幕像素映射为 1 个图像像素。",
 "4 screen pixels mapped to 1 image pixel":"4 个屏幕像素映射为 1 个图像像素。",
 
-"load raw":"导入 RAW","save output":"保存输出","run simulation":"运行模拟",
+"load raw":"导入 RAW","save output":"保存输出","save output image":"保存输出图像","run simulation":"运行模拟",
 "save current as default":"保存为默认设置","save gui state":"保存界面设置",
 "load gui state":"加载界面设置","restore factory default":"恢复出厂默认设置",
 "failed to load raw image.":"导入 RAW 图像失败。","failed to save output image.":"保存输出图像失败。",
