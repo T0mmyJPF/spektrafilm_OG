@@ -10,7 +10,7 @@ _raw = os.environ.get("SPEKTRAFILM_LANGUAGE", "zh_CN").strip().lower()
 LANGUAGE = "en" if _raw in {"en", "en_us", "english"} else "zh_CN"
 
 _ZH = {
-"main":"主界面","film":"胶片","print":"印相","advanced":"高级","config":"设置",
+"main":"主界面","film":"胶片","print":"印相","advanced":"高级","config":"设置",\n"cine":"电影胶片","still":"静态照片胶片",
 "napari layers":"图层","input":"输入","import raw":"导入 RAW","import rgb":"导入图像",
 "crop and upscale":"裁剪与放大","spectral upsampling":"光谱上采样","profiles":"配置文件",
 "camera":"相机","scanner":"扫描仪","display":"显示","experimental":"实验性功能","tune":"微调",
