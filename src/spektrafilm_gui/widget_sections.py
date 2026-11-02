@@ -172,7 +172,7 @@ def _build_button(
     if role is not None:
         button.setProperty('role', role)
     if tooltip:
-        button.setToolTip(tooltip)
+        button.setToolTip(_normalize_ui_text(tooltip))
     button.clicked.connect(callback)
     return button
 
@@ -182,7 +182,7 @@ def _build_widget_label(section_name: str, field_name: str) -> QLabel:
     label_text = (spec.label if spec is not None else None) or _format_label(field_name)
     label = QLabel(_normalize_ui_text(label_text))
     if spec is not None and spec.tooltip:
-        label.setToolTip(spec.tooltip)
+        label.setToolTip(_normalize_ui_text(spec.tooltip))
     return label
 
 
@@ -318,7 +318,7 @@ def _build_path_panel(
         label = QLabel(_normalize_ui_text(spec.label or _format_label(spec.leaf)))
         if spec.tooltip:
             label.setToolTip(spec.tooltip)
-            editor.setToolTip(spec.tooltip)
+            editor.setToolTip(_normalize_ui_text(spec.tooltip))
         form.addRow(label, editor)
     return _build_collapsible_form_section(title, form, expanded=expanded)
 
@@ -515,7 +515,7 @@ class SpecialSection(QWidget):
         borrowed = SIMULATION_SPECIAL_BORROWED_FIELDS[0]
         borrowed_label = QLabel(_normalize_ui_text(borrowed.label or _format_label(borrowed.leaf)))
         if borrowed.tooltip:
-            borrowed_label.setToolTip(borrowed.tooltip)
+            borrowed_label.setToolTip(_normalize_ui_text(borrowed.tooltip))
         form.addRow(borrowed_label, simulation_section.print_illuminant)
         for spec in SPECIAL_FIELDS:
             editor = _editor_from_param_spec(_path_annotation(SpecialState, spec.path), spec, label=spec.path)
@@ -697,7 +697,7 @@ class SimulationSection(QWidget):
         self.bottom_scan_for_print = BoolEditor()
         scan_for_print_spec = _AUXILIARY_FIELD_SPECS['scan_for_print']
         if scan_for_print_spec.tooltip:
-            self.bottom_scan_for_print.setToolTip(scan_for_print_spec.tooltip)
+            self.bottom_scan_for_print.setToolTip(_normalize_ui_text(scan_for_print_spec.tooltip))
         self.bottom_scan_for_print.toggled.connect(self._apply_scan_for_print_mode)
         preview_button_spec = _SIMULATION_ACTION_BUTTON_SPECS['preview']
         self.preview_button = _build_button(
