@@ -52,6 +52,7 @@ from spektrafilm_gui.theme_palette import SIZE_FOOTER_ITEM_SPACING
 from spektrafilm_gui.options import RawWhiteBalance
 from spektrafilm_gui.widget_editors import BoolEditor, EnumEditor, FloatEditor, FloatTupleEditor, IntEditor, IntTupleEditor, ProfileEnumEditor
 from spektrafilm_gui.widget_primitives import CollapsibleSection, normalize_ui_text as _normalize_ui_text
+from spektrafilm_gui.i18n import tr_action
 
 
 LOAD_RAW_FIELDS = (
@@ -168,7 +169,7 @@ def _build_button(
     preserve_case: bool = False,
     role: str | None = None,
 ) -> QPushButton:
-    button = QPushButton(text if preserve_case else _normalize_ui_text(text))
+    button = QPushButton(tr_action(text) if preserve_case else _normalize_ui_text(text))
     if role is not None:
         button.setProperty('role', role)
     if tooltip:
