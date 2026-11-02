@@ -192,7 +192,7 @@ def _build_auxiliary_label(name: str) -> QLabel:
     label_text = (spec.label if spec is not None else None) or name.replace("_", " ")
     label = QLabel(_normalize_ui_text(label_text))
     if spec is not None and spec.tooltip:
-        label.setToolTip(spec.tooltip)
+        label.setToolTip(_normalize_ui_text(spec.tooltip))
     return label
 
 
@@ -318,7 +318,7 @@ def _build_path_panel(
         editor = editors[spec.leaf]
         label = QLabel(_normalize_ui_text(spec.label or _format_label(spec.leaf)))
         if spec.tooltip:
-            label.setToolTip(spec.tooltip)
+            label.setToolTip(_normalize_ui_text(spec.tooltip))
             editor.setToolTip(_normalize_ui_text(spec.tooltip))
         form.addRow(label, editor)
     return _build_collapsible_form_section(title, form, expanded=expanded)
@@ -474,8 +474,8 @@ class ParamsGroupSection(QWidget):
             editor = self._editors[spec.leaf]
             label = QLabel(_normalize_ui_text(spec.label or _format_label(spec.leaf)))
             if spec.tooltip:
-                label.setToolTip(spec.tooltip)
-                editor.setToolTip(spec.tooltip)
+                label.setToolTip(_normalize_ui_text(spec.tooltip))
+                editor.setToolTip(_normalize_ui_text(spec.tooltip))
             form.addRow(label, editor)
 
         content = QWidget()
@@ -526,8 +526,8 @@ class SpecialSection(QWidget):
                 continue
             label = QLabel(_normalize_ui_text(spec.label or _format_label(spec.leaf)))
             if spec.tooltip:
-                label.setToolTip(spec.tooltip)
-                editor.setToolTip(spec.tooltip)
+                label.setToolTip(_normalize_ui_text(spec.tooltip))
+                editor.setToolTip(_normalize_ui_text(spec.tooltip))
             form.addRow(label, editor)
         self.setLayout(_build_collapsible_form_section('Experimental', form, expanded=False))
 
@@ -646,8 +646,8 @@ class DisplaySection(QWidget):
             setattr(self, spec.leaf, editor)
             label = QLabel(_normalize_ui_text(spec.label or _format_label(spec.leaf)))
             if spec.tooltip:
-                label.setToolTip(spec.tooltip)
-                editor.setToolTip(spec.tooltip)
+                label.setToolTip(_normalize_ui_text(spec.tooltip))
+                editor.setToolTip(_normalize_ui_text(spec.tooltip))
             widget: QWidget = editor
             if spec.leaf == 'preview_max_size':
                 widget = _build_vertical_container(_build_button_row(editor, self.update_preview_button, spacing=4), spacing=0)
