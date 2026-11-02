@@ -764,7 +764,7 @@ class GuiController:
     def _run_simulation(self, *, source_layer_name: str) -> None:
         image_data = self._simulation_input_image(source_layer_name=source_layer_name)
         if image_data is None:
-            QMessageBox.warning(dialog_parent(self._viewer), 'Run simulation', 'Load an input image before running the simulation.')
+            QMessageBox.warning(dialog_parent(self._viewer), tr('Run simulation'), tr('运行模拟前，请先导入输入图像。'))
             return
 
         state = collect_gui_state(widgets=self._widgets)
