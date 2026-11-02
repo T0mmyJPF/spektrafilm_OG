@@ -27,6 +27,7 @@ from spektrafilm_gui.theme_palette import (
     BOOL_EDITOR_HOVER_BG,
 )
 from spektrafilm_gui.theme import resolve_theme_qcolor
+from spektrafilm_gui.i18n import enum_label
 
 
 @lru_cache(maxsize=None)
@@ -258,15 +259,18 @@ class BoolEditor(QtWidgets.QCheckBox):
 class EnumEditor(QtWidgets.QComboBox):
     def __init__(self, values: list[str]):
         super().__init__()
-        self.addItems(values)
+        # Display labels are localized; userData retains canonical values.
+        for value in values:
+            self.addItem(enum_label(value), userData=value)
 
     @property
     def value(self) -> str:
-        return self.currentText()
+        value = self.currentData()
+        return str(value) if value is not None else self.currentText()
 
     @value.setter
     def value(self, value: str) -> None:
-        index = self.findText(value)
+        index = self.findData(value)
         if index >= 0:
             self.setCurrentIndex(index)
         else:
