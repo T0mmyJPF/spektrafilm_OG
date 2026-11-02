@@ -86,6 +86,7 @@ _ZH = {
 "max size of the long edge of the preview image in pixels":"预览图像长边的最大像素尺寸。",
 "run the full simulation on the full-resolution input":"对完整分辨率的输入图像运行完整模拟。",
 "save the current output layer to an image file":"将当前输出图层保存为图像文件。",
+"run the simulation on a small preview and deactivates grain, halation, blurs, unsharp mask (diffusion filters are active)":"在较小的预览图上运行模拟，并暂时关闭颗粒、光晕、模糊和反锐化蒙版（柔化滤镜仍保持启用）。",
 "pixel of the screen mapped 1 to 1 to the image pixel":"屏幕像素与图像像素按 1:1 映射显示。",
 "2 screen pixels mapped to 1 image pixel":"2 个屏幕像素映射为 1 个图像像素。",
 "4 screen pixels mapped to 1 image pixel":"4 个屏幕像素映射为 1 个图像像素。",
