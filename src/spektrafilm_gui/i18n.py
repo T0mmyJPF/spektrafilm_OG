@@ -212,6 +212,11 @@ _ZH = {
 "auto adjust the print exposure for the camera exposure compensation ev":"根据相机曝光补偿 EV 自动调整印相曝光。",
 "add or not the cctf to the saved image file":"保存图像时是否应用 CCTF 编码。",
 "scan the image for print, ie white and black correction of the scanner are active, and glare is deactivated.":"印相扫描模式：启用扫描仪白场和黑场校正，并关闭眩光。",
+
+"inhibition samelayer":"同层抑制","inhibition interlayer":"跨层抑制",
+"gamma samelayer rgb":"RGB 同层伽马","gamma interlayer r to gb":"R 层对 G/B 层的抑制",
+"gamma interlayer g to rb":"G 层对 R/B 层的抑制","gamma interlayer b to rg":"B 层对 R/G 层的抑制",
+"diffusion size um":"成色剂扩散尺寸（μm）",
 }
 
 _ENUM_ZH = {
